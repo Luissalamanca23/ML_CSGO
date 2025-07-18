@@ -182,14 +182,14 @@ class ModelPredictor:
             logger.info(f"Input DataFrame shape: {input_df.shape}")
             logger.info(f"Input DataFrame:\n{input_df}")
             
-            # Aplicar scaling si es necesario
-            if self.classification_metadata['use_scaler'] and self.classification_scaler:
-                logger.info("Aplicando scaling")
+            # Aplicar scaling - K-Nearest Neighbors siempre necesita escalado
+            if self.classification_scaler:
+                logger.info("Aplicando scaling (requerido para KNN)")
                 input_scaled = self.classification_scaler.transform(input_df)
                 prediction = self.classification_model.predict(input_scaled)[0]
                 probabilities = self.classification_model.predict_proba(input_scaled)[0]
             else:
-                logger.info("Sin scaling")
+                logger.warning("Scaler no disponible - predicciones pueden ser incorrectas")
                 prediction = self.classification_model.predict(input_df)[0]
                 probabilities = self.classification_model.predict_proba(input_df)[0]
             
@@ -244,14 +244,9 @@ class ModelPredictor:
             logger.info(f"Input DataFrame shape: {input_df.shape}")
             logger.info(f"Input DataFrame:\n{input_df}")
             
-            # Aplicar scaling si es necesario
-            if self.regression_metadata['use_scaler'] and self.regression_scaler:
-                logger.info("Aplicando scaling")
-                input_scaled = self.regression_scaler.transform(input_df)
-                prediction = self.regression_model.predict(input_scaled)[0]
-            else:
-                logger.info("Sin scaling")
-                prediction = self.regression_model.predict(input_df)[0]
+            # Gradient Boosting NO necesita escalado, usar datos originales
+            logger.info("Usando datos sin escalar (Gradient Boosting)")
+            prediction = self.regression_model.predict(input_df)[0]
             
             logger.info(f"Predicción cruda: {prediction}")
             
@@ -287,12 +282,12 @@ def index():
 @app.route('/classification')
 def classification_page():
     """Página de clasificación de efectividad"""
-    return render_template('classification.html')
+    return render_template('classification_fixed.html')
 
 @app.route('/regression')
 def regression_page():
     """Página de regresión de kills"""
-    return render_template('regression.html')
+    return render_template('regression_fixed.html')
 
 @app.route('/explanation')
 def explanation_page():

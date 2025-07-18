@@ -1,0 +1,29 @@
+{
+  "model_name": "K-Nearest Neighbors",
+  "model_type": "classification",
+  "target": "EffectivenessLevel",
+  "features": [
+    "RoundHeadshots",
+    "GrenadeEffectiveness"
+  ],
+  "use_scaler": true,
+  "best_params": {
+    "n_neighbors": 7,
+    "weights": "distance"
+  },
+  "performance_metrics": {
+    "test_accuracy": 0.813,
+    "test_f1": 0.807,
+    "test_auc": 0.884,
+    "cv_accuracy": 0.81
+  },
+  "class_mapping": {
+    "0": "Bajo",
+    "1": "Medio",
+    "2": "Alto"
+  },
+  "feature_requirements": {
+    "RoundHeadshots": "int64",
+    "GrenadeEffectiveness": "float64"
+  }
+}

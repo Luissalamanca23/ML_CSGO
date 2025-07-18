@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Kills - CS:GO ML</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .prediction-value { font-size: 2rem; font-weight: bold; color: #28a745; }
+        .loading-spinner {
+            width: 40px; height: 40px; border: 4px solid #f3f3f3;
+            border-top: 4px solid #28a745; border-radius: 50%; 
+            animation: spin 1s linear infinite; margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .fade-in { animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-bullseye"></i> CS:GO ML Predictor</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home"></i> Inicio</a>
+                <a class="nav-link" href="/classification"><i class="fas fa-chart-pie"></i> Clasificación</a>
+                <a class="nav-link active" href="/regression"><i class="fas fa-chart-line"></i> Regresión</a>
+                <a class="nav-link" href="/explanation"><i class="fas fa-brain"></i> Metodología</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2><i class="fas fa-chart-line"></i> Predicción de Kills en la Partida</h2>
+        <p class="text-muted">Ingresa las métricas de rendimiento para obtener una predicción del número total de eliminaciones esperadas.</p>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="regressionForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="roundKills" class="form-label">
+                                            <i class="fas fa-crosshairs text-danger"></i> Kills por Ronda
+                                        </label>
+                                        <input type="number" class="form-control" id="roundKills" 
+                                               min="0" max="3" step="0.1" value="1.0" required>
+                                        <small class="text-muted">Rango típico: 0.5-2.5 kills por ronda</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="matchHeadshots" class="form-label">
+                                            <i class="fas fa-bullseye text-warning"></i> Headshots Totales
+                                        </label>
+                                        <input type="number" class="form-control" id="matchHeadshots" 
+                                               min="0" max="30" step="1" value="8" required>
+                                        <small class="text-muted">Rango típico: 3-20 headshots por partida</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="teamEquipmentValue" class="form-label">
+                                            <i class="fas fa-shield-alt text-info"></i> Valor Equipamiento Equipo
+                                        </label>
+                                        <input type="number" class="form-control" id="teamEquipmentValue" 
+                                               min="5000" max="25000" step="500" value="18000" required>
+                                        <small class="text-muted">Rango típico: $12,000-$23,000 por equipo</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="matchAssists" class="form-label">
+                                            <i class="fas fa-hands-helping text-success"></i> Asistencias Totales
+                                        </label>
+                                        <input type="number" class="form-control" id="matchAssists" 
+                                               min="0" max="20" step="1" value="5" required>
+                                        <small class="text-muted">Rango típico: 2-12 asistencias por partida</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-calculator"></i> Calcular Predicción
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Section -->
+        <div class="row mt-4" id="loadingSection" style="display: none;">
+            <div class="col-12 text-center">
+                <div class="loading-spinner"></div>
+                <div class="mt-2">Procesando datos con el modelo de regresión...</div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="row mt-4" id="resultsSection" style="display: none;">
+            <div class="col-lg-10 mx-auto">
+                <div class="card fade-in">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Resultados de la Predicción</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="predictionResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="row mt-4" id="errorSection" style="display: none;">
+            <div class="col-lg-10 mx-auto">
+                <div class="alert alert-danger">
+                    <h6><i class="fas fa-exclamation-triangle"></i> Error en la Predicción</h6>
+                    <p id="errorMessage" class="mb-0"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        console.log('Regression page loaded');
+        
+        document.getElementById('regressionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('Regression form submitted');
+            
+            // Get form values
+            const roundKills = parseFloat(document.getElementById('roundKills').value);
+            const matchHeadshots = parseFloat(document.getElementById('matchHeadshots').value);
+            const teamEquipmentValue = parseFloat(document.getElementById('teamEquipmentValue').value);
+            const matchAssists = parseFloat(document.getElementById('matchAssists').value);
+            
+            console.log('Values:', {roundKills, matchHeadshots, teamEquipmentValue, matchAssists});
+            
+            // Validate
+            if (roundKills < 0 || matchHeadshots < 0 || teamEquipmentValue < 0 || matchAssists < 0) {
+                showError('Todos los valores deben ser positivos');
+                return;
+            }
+            
+            // Show loading
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/predict/match_kills', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        round_kills: roundKills,
+                        match_headshots: matchHeadshots,
+                        team_equipment_value: teamEquipmentValue,
+                        match_assists: matchAssists
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.success) {
+                    showResults(data.result, data.model_info);
+                } else {
+                    showError(data.error || 'Error desconocido');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showError('Error de conexión: ' + error.message);
+            }
+        });
+
+        function showLoading() {
+            console.log('Showing loading');
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('errorSection').style.display = 'none';
+        }
+
+        function showResults(result, modelInfo) {
+            console.log('Showing results:', result);
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('errorSection').style.display = 'none';
+            
+            const prediction = result.prediction;
+            const targetRange = result.target_range;
+            
+            // Determine performance level
+            let performanceLevel, performanceColor, performanceIcon;
+            if (prediction >= targetRange.mean * 1.5) {
+                performanceLevel = 'Excelente';
+                performanceColor = 'success';
+                performanceIcon = 'fas fa-trophy';
+            } else if (prediction >= targetRange.mean) {
+                performanceLevel = 'Bueno';
+                performanceColor = 'warning';
+                performanceIcon = 'fas fa-medal';
+            } else {
+                performanceLevel = 'Básico';
+                performanceColor = 'secondary';
+                performanceIcon = 'fas fa-user';
+            }
+            
+            const percentile = ((prediction - targetRange.min) / (targetRange.max - targetRange.min)) * 100;
+            
+            const resultHTML = `
+                <div class="text-center mb-4">
+                    <i class="${performanceIcon}" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
+                    <h4 class="fw-bold text-success mb-2">Kills Predichos</h4>
+                    <div class="prediction-value">${prediction.toFixed(1)}</div>
+                    <div class="text-muted">
+                        Nivel de rendimiento: ${performanceLevel}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold text-success mb-3">Análisis del Resultado</h6>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Posición en el dataset:</span>
+                                <span>${percentile.toFixed(1)}%</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 12px;">
+                                <div class="progress-bar bg-${performanceColor}" style="width: ${percentile}%"></div>
+                            </div>
+                            <small class="text-muted">
+                                Rango: ${targetRange.min.toFixed(0)} - ${targetRange.max.toFixed(0)} kills
+                            </small>
+                        </div>
+                        
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <small class="text-muted">Mínimo</small>
+                                <div class="fw-bold">${targetRange.min.toFixed(0)}</div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Promedio</small>
+                                <div class="fw-bold">${targetRange.mean.toFixed(1)}</div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Máximo</small>
+                                <div class="fw-bold">${targetRange.max.toFixed(0)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold text-success mb-3">Información del Modelo</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Algoritmo:</span>
+                            <span>${modelInfo.model_name}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>R² Score:</span>
+                            <span>${(modelInfo.r2_score * 100).toFixed(1)}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tipo:</span>
+                            <span>Regresión</span>
+                        </div>
+                        
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <strong>Comparación vs promedio:</strong><br>
+                                ${getComparisonText(prediction, targetRange.mean)}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-4">
+                    <h6><i class="fas fa-lightbulb"></i> Interpretación del Resultado</h6>
+                    ${getInterpretation(prediction, targetRange.mean, performanceLevel)}
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Comparación Visual</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-danger" style="width: 20%">
+                                <small>Bajo</small>
+                            </div>
+                            <div class="progress-bar bg-warning" style="width: 30%">
+                                <small>Promedio</small>
+                            </div>
+                            <div class="progress-bar bg-success" style="width: 50%">
+                                <small>Alto</small>
+                            </div>
+                        </div>
+                        <div class="position-relative mt-1">
+                            <div style="position: absolute; left: ${Math.min(95, Math.max(5, percentile))}%; transform: translateX(-50%);">
+                                <i class="fas fa-caret-up text-primary" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('predictionResult').innerHTML = resultHTML;
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        function showError(message) {
+            console.log('Showing error:', message);
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorSection').style.display = 'block';
+        }
+
+        function getComparisonText(prediction, mean) {
+            const diff = prediction - mean;
+            const percentage = (diff / mean * 100);
+            
+            if (Math.abs(percentage) < 5) {
+                return `Muy cercano al promedio (${mean.toFixed(1)} kills)`;
+            } else if (percentage > 0) {
+                return `+${percentage.toFixed(0)}% por encima del promedio`;
+            } else {
+                return `${percentage.toFixed(0)}% por debajo del promedio`;
+            }
+        }
+
+        function getInterpretation(prediction, mean, level) {
+            let interpretation = '';
+            
+            switch(level) {
+                case 'Excelente':
+                    interpretation = `Con <strong>${prediction.toFixed(1)} kills predichos</strong>, este jugador está en la ` +
+                                   'categoría de <strong>rendimiento excepcional</strong>. Sus estadísticas sugieren un ' +
+                                   'alto nivel de skill individual y buena coordinación con el equipo.';
+                    break;
+                case 'Bueno':
+                    interpretation = `Con <strong>${prediction.toFixed(1)} kills predichos</strong>, este jugador muestra un ` +
+                                   '<strong>rendimiento sólido</strong>. Está por encima del promedio y contribuye ' +
+                                   'significativamente al éxito del equipo.';
+                    break;
+                default:
+                    interpretation = `Con <strong>${prediction.toFixed(1)} kills predichos</strong>, este jugador tiene un ` +
+                                   '<strong>rendimiento estándar</strong>. Hay oportunidades de mejora en precisión ' +
+                                   'y trabajo en equipo para aumentar su impacto.';
+            }
+            
+            return interpretation;
+        }
+    </script>
+</body>
+</html>
