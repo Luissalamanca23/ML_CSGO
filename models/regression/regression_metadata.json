@@ -1,37 +1,39 @@
 {
-  "model_name": "Gradient Boosting",
-  "model_type": "regression",
-  "target": "MatchKills",
+  "model_name": "Gradient Boosting Mejorado",
   "features": [
     "MatchHeadshots",
     "MatchAssists",
     "RoundKills",
     "TeamStartingEquipmentValue"
   ],
+  "target": "MatchKills",
   "use_scaler": false,
-  "best_params": {
-    "n_estimators": 200,
-    "learning_rate": 0.1,
-    "max_depth": 6,
-    "subsample": 0.8
+  "performance": {
+    "test_r2": 0.850211225512184,
+    "test_rmse": 3.0671069198436247,
+    "test_mae": 2.266730072980648
   },
-  "performance_metrics": {
-    "test_r2": 0.7487,
-    "test_rmse": 3.1271,
-    "test_mae": 2.3017,
-    "cv_r2_mean": 0.745,
-    "cv_r2_std": 0.003
+  "target_stats": {
+    "min": 0.0,
+    "max": 60.0,
+    "mean": 9.102322351775465
   },
-  "target_info": {
-    "min_value": 0.0,
-    "max_value": 41.0,
-    "mean_value": 8.5,
-    "std_value": 6.2
-  },
-  "feature_requirements": {
-    "MatchHeadshots": "float64",
-    "MatchAssists": "float64",
-    "RoundKills": "float64",
-    "TeamStartingEquipmentValue": "float64"
+  "extrapolation_range": {
+    "MatchHeadshots": [
+      0,
+      50
+    ],
+    "MatchAssists": [
+      0,
+      30
+    ],
+    "RoundKills": [
+      0,
+      5
+    ],
+    "TeamStartingEquipmentValue": [
+      0,
+      35000
+    ]
   }
 }
