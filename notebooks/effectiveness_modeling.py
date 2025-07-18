@@ -29,86 +29,52 @@ os.makedirs(MODELS_DIR, exist_ok=True)
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
 def create_realistic_features(df):
-    """Crear features más realistas con rangos amplios"""
+    """Usar datos reales del CSV limpio en lugar de generar datos sintéticos"""
     df_new = df.copy()
     
-    # Variables base más realistas
-    np.random.seed(42)
+    print("Usando datos reales del CSV limpio...")
     
-    # RoundKills más realista (0-5 por ronda, distribución más amplia)
+    # Verificar columnas disponibles
+    print(f"Columnas disponibles: {list(df_new.columns)}")
+    
+    # Usar datos reales existentes
     if 'RoundKills' not in df_new.columns:
-        # Distribución más realista: 70% tienen 0-1, 25% tienen 2-3, 5% tienen 4-5
-        round_kills = []
-        for _ in range(len(df_new)):
-            rand = np.random.random()
-            if rand < 0.4:
-                kills = 0
-            elif rand < 0.7:
-                kills = 1
-            elif rand < 0.85:
-                kills = 2
-            elif rand < 0.95:
-                kills = 3
-            elif rand < 0.99:
-                kills = 4
-            else:
-                kills = 5
-            round_kills.append(kills)
-        df_new['RoundKills'] = round_kills
+        print("ERROR: RoundKills no encontrado en datos limpios")
+        return None
     
-    # RoundAssists más realista
     if 'RoundAssists' not in df_new.columns:
-        round_assists = []
-        for kills in df_new['RoundKills']:
-            # Assists correlacionados con kills pero independientes
-            base_prob = 0.3 + (kills * 0.1)  # Más kills -> más probabilidad de assists
-            assists = np.random.binomial(3, base_prob)  # Max 3 assists
-            round_assists.append(assists)
-        df_new['RoundAssists'] = round_assists
+        print("ERROR: RoundAssists no encontrado en datos limpios")
+        return None
+        
+    if 'RoundHeadshots' not in df_new.columns:
+        print("ERROR: RoundHeadshots no encontrado en datos limpios")
+        return None
     
-    # Effectiveness Score
+    # Calcular GrenadeEffectiveness desde datos reales
+    if 'RLethalGrenadesThrown' in df_new.columns and 'RNonLethalGrenadesThrown' in df_new.columns:
+        df_new['GrenadeEffectiveness'] = df_new['RLethalGrenadesThrown'] + df_new['RNonLethalGrenadesThrown']
+    else:
+        print("WARNING: Columnas de granadas no encontradas, usando valores por defecto")
+        # Usar una aproximación basada en performance
+        df_new['GrenadeEffectiveness'] = df_new['RoundKills'] + df_new['RoundAssists']
+    
+    # Calcular EffectivenessScore usando datos reales
     df_new['EffectivenessScore'] = df_new['RoundKills'] * 2 + df_new['RoundAssists']
     
-    # Effectiveness Level MÁS REALISTA
-    # Cambiar los bins para que sean más permisivos
+    # Clasificar effectiveness usando bins realistas
     df_new['EffectivenessLevel'] = pd.cut(
         df_new['EffectivenessScore'].astype(float),
-        bins=[-0.1, 1, 4, np.inf],  # Cambió: antes era [0.5, 2], ahora [1, 4]
+        bins=[-0.1, 1, 4, np.inf],
         labels=['Bajo', 'Medio', 'Alto']
     )
     
-    # RoundHeadshots MÁS REALISTA (0-8 range)
-    round_headshots = []
-    for kills in df_new['RoundKills']:
-        if kills == 0:
-            headshots = 0
-        else:
-            # 30% de probabilidad de headshot por kill + bonus aleatorio
-            base_headshots = np.random.binomial(kills, 0.3)
-            # Añadir posibilidad de headshots extra (jugadores skill altos)
-            bonus = np.random.poisson(0.2)  # Pequeño bonus
-            headshots = min(8, base_headshots + bonus)  # Max 8
-        round_headshots.append(headshots)
-    df_new['RoundHeadshots'] = round_headshots
+    # Limpiar datos
+    df_new = df_new.dropna(subset=['RoundHeadshots', 'GrenadeEffectiveness', 'EffectivenessLevel'])
     
-    # GrenadeEffectiveness MÁS REALISTA (0-15 range)
-    grenade_effectiveness = []
-    for _, row in df_new.iterrows():
-        kills = row['RoundKills']
-        assists = row['RoundAssists']
-        
-        # Base effectiveness correlacionado con performance
-        base_eff = kills + assists * 0.5
-        # Añadir componente aleatorio para uso táctico de granadas
-        tactical_bonus = np.random.poisson(1.0)  # Promedio 1
-        # Jugadores buenos usan granadas más efectivamente
-        skill_multiplier = 1 + (kills * 0.2)
-        
-        total_eff = (base_eff + tactical_bonus) * skill_multiplier
-        total_eff = min(15, max(0, total_eff))  # Clamp 0-15
-        grenade_effectiveness.append(total_eff)
-    
-    df_new['GrenadeEffectiveness'] = grenade_effectiveness
+    print(f"Datos procesados: {len(df_new)} filas")
+    print(f"RoundHeadshots: min={df_new['RoundHeadshots'].min()}, max={df_new['RoundHeadshots'].max()}")
+    print(f"GrenadeEffectiveness: min={df_new['GrenadeEffectiveness'].min()}, max={df_new['GrenadeEffectiveness'].max()}")
+    print(f"EffectivenessScore: min={df_new['EffectivenessScore'].min()}, max={df_new['EffectivenessScore'].max()}")
     
     return df_new
 
@@ -249,9 +215,11 @@ def train_improved_model():
     features = ['RoundHeadshots', 'GrenadeEffectiveness']
     X = df_features[features].copy()
     
-    # Codificar target
+    # Codificar target de manera explícita para evitar problemas
     le = LabelEncoder()
-    y = le.fit_transform(df_features['EffectivenessLevel'])
+    # Asegurar orden correcto: Bajo=0, Medio=1, Alto=2
+    le.fit(['Bajo', 'Medio', 'Alto'])
+    y = le.transform(df_features['EffectivenessLevel'])
     
     print(f"\nFeatures: {features}")
     print(f"Target distribution: {np.bincount(y)}")
