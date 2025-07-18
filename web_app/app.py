@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Configuración de rutas de modelos
-MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models')
+MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models')
 CLASSIFICATION_DIR = os.path.join(MODELS_DIR, 'classification')
 REGRESSION_DIR = os.path.join(MODELS_DIR, 'regression')
 
