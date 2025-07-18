@@ -6,23 +6,23 @@
   ],
   "use_scaler": true,
   "performance": {
-    "test_accuracy": 0.9805445012949277,
-    "test_f1": 0.9805482081394269,
-    "test_auc": 0.994220638109573
+    "test_accuracy": 0.6724780493967532,
+    "test_f1": 0.6639980499117691,
+    "test_auc": 0.7498913091405818
   },
   "class_mapping": {
-    "0": "Bajo",
-    "1": "Medio",
-    "2": "Alto"
+    "0": "Alto",
+    "1": "Bajo",
+    "2": "Medio"
   },
   "feature_ranges": {
     "RoundHeadshots": [
       0,
-      8
+      4
     ],
     "GrenadeEffectiveness": [
       0,
-      15
+      8
     ]
   }
 }
