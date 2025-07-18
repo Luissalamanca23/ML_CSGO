@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+
+{% block title %}Proceso de Entrenamiento - CS:GO ML Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section fade-in">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">
+                <i class="fas fa-brain"></i> Proceso de Entrenamiento
+            </h1>
+            <p class="hero-subtitle">
+                Metodología CRISP-DM aplicada al desarrollo de modelos predictivos
+            </p>
+            <p class="hero-description">
+                Descubre cómo fueron desarrollados y optimizados nuestros modelos de Machine Learning para CS:GO
+            </p>
+        </div>
+    </section>
+
+    <!-- Classification Model Process -->
+    <section class="section">
+        <div class="card scale-in">
+            <div class="card-header">
+                <i class="fas fa-chart-pie"></i> Modelo de Clasificación - Efectividad del Jugador
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    El modelo de clasificación predice el nivel de efectividad del jugador (Bajo, Medio, Alto) 
+                    basándose en métricas de rendimiento clave como headshots por ronda y efectividad con granadas.
+                </p>
+
+                <!-- Phase 1: Data Distribution -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <img src="/static/images/effectiveness/02_analisis_target_variable.png" 
+                             alt="Distribución de la variable objetivo" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">1. Análisis de la Variable Objetivo</h5>
+                        <p class="text-muted">
+                            Se analizó la distribución de los niveles de efectividad en el dataset. Se observa una 
+                            distribución relativamente balanceada entre las tres categorías, con una ligera predominancia 
+                            del nivel "Medio", lo cual es favorable para el entrenamiento del modelo.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">Nivel Bajo</span>
+                                <span class="metric-value">~35%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Nivel Medio</span>
+                                <span class="metric-value">~40%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Nivel Alto</span>
+                                <span class="metric-value">~25%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Feature Analysis -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">2. Análisis de Características</h5>
+                        <p class="text-muted">
+                            Se evaluó la relación entre las variables predictoras (RoundHeadshots y GrenadeEffectiveness) 
+                            y la variable objetivo. Los boxplots muestran clara separación entre niveles, confirmando 
+                            el poder predictivo de estas características.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">Correlación Headshots</span>
+                                <span class="metric-value">0.74</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Correlación Granadas</span>
+                                <span class="metric-value">0.68</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <img src="/static/images/effectiveness/03_analisis_features_principales.png" 
+                             alt="Análisis de características principales" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                </div>
+
+                <!-- Phase 3: Model Comparison -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <img src="/static/images/effectiveness/06_comparacion_modelos.png" 
+                             alt="Comparación de modelos" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">3. Comparación de Modelos</h5>
+                        <p class="text-muted">
+                            Se evaluaron múltiples algoritmos de clasificación utilizando validación cruzada. 
+                            Gradient Boosting demostró el mejor rendimiento con una precisión del 82.4%, 
+                            superando a Random Forest, SVM y otros algoritmos.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">Gradient Boosting</span>
+                                <span class="metric-value">82.4%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Random Forest</span>
+                                <span class="metric-value">79.1%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">SVM</span>
+                                <span class="metric-value">76.8%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4: Confusion Matrix -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">4. Matriz de Confusión</h5>
+                        <p class="text-muted">
+                            La matriz de confusión del mejor modelo muestra un excelente rendimiento en la clasificación 
+                            de los tres niveles de efectividad. La diagonal principal indica alta precisión en las 
+                            predicciones correctas, con errores mínimos entre categorías adyacentes.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">Precisión Nivel Bajo</span>
+                                <span class="metric-value">84%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Precisión Nivel Medio</span>
+                                <span class="metric-value">81%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Precisión Nivel Alto</span>
+                                <span class="metric-value">83%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <img src="/static/images/effectiveness/07_matrices_confusion.png" 
+                             alt="Matrices de confusión" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regression Model Process -->
+    <section class="section">
+        <div class="card scale-in">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i> Modelo de Regresión - Predicción de Kills
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    El modelo de regresión predice el número total de eliminaciones en una partida utilizando 
+                    múltiples variables de rendimiento del jugador y contexto de la partida.
+                </p>
+
+                <!-- Phase 1: Feature Correlation -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <img src="/static/images/regression/01_matriz_correlacion_features.png" 
+                             alt="Matriz de correlación de características" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">1. Análisis de Correlaciones</h5>
+                        <p class="text-muted">
+                            Se analizaron las correlaciones entre las variables predictoras y la variable objetivo (MatchKills). 
+                            Las correlaciones altas (>0.7) con RoundKills y MatchHeadshots confirman su relevancia 
+                            para el modelo predictivo.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">RoundKills</span>
+                                <span class="metric-value">0.89</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">MatchHeadshots</span>
+                                <span class="metric-value">0.76</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">MatchAssists</span>
+                                <span class="metric-value">0.62</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Model Performance -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">2. Comparación de Rendimiento</h5>
+                        <p class="text-muted">
+                            Se evaluaron diferentes algoritmos de regresión. Gradient Boosting Regressor alcanzó 
+                            el mejor R² score de 75.3%, demostrando una capacidad superior para capturar patrones 
+                            complejos en los datos de CS:GO.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">Gradient Boosting</span>
+                                <span class="metric-value">R² = 0.753</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Random Forest</span>
+                                <span class="metric-value">R² = 0.721</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Ridge Regression</span>
+                                <span class="metric-value">R² = 0.689</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <img src="/static/images/regression/04_comparacion_modelos.png" 
+                             alt="Comparación de modelos de regresión" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                </div>
+
+                <!-- Phase 3: Feature Importance -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <img src="/static/images/regression/05_feature_importance.png" 
+                             alt="Importancia de características" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">3. Importancia de Variables</h5>
+                        <p class="text-muted">
+                            El análisis de importancia revela que RoundKills es la variable más predictiva, 
+                            seguida por MatchHeadshots. Esto confirma la intuición de que el rendimiento por ronda 
+                            es el mejor predictor del rendimiento total en la partida.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">RoundKills</span>
+                                <span class="metric-value">45.2%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">MatchHeadshots</span>
+                                <span class="metric-value">28.7%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">TeamEquipment</span>
+                                <span class="metric-value">15.1%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4: Residual Analysis -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">4. Análisis de Residuos</h5>
+                        <p class="text-muted">
+                            El análisis de residuos confirma la calidad del modelo. La distribución normal de los 
+                            residuos y la ausencia de patrones sistemáticos indican que el modelo captura 
+                            adecuadamente la relación entre variables.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">RMSE</span>
+                                <span class="metric-value">2.34</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">MAE</span>
+                                <span class="metric-value">1.67</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Error medio</span>
+                                <span class="metric-value">0.02</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <img src="/static/images/regression/06_analisis_residuos.png" 
+                             alt="Análisis de residuos" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Summary -->
+    <section class="section">
+        <div class="card scale-in">
+            <div class="card-header">
+                <i class="fas fa-graduation-cap"></i> Resumen de Metodología
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-search text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Comprensión del Negocio</h6>
+                            <p class="text-muted small">
+                                Análisis de objetivos, definición de métricas de éxito y comprensión 
+                                del contexto de CS:GO profesional.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-database text-accent" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Comprensión de Datos</h6>
+                            <p class="text-muted small">
+                                Exploración exhaustiva del dataset de 79k registros, identificación 
+                                de patrones y validación de calidad.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-tools text-warning" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Preparación de Datos</h6>
+                            <p class="text-muted small">
+                                Limpieza, normalización, ingeniería de características y 
+                                división estratificada de datasets.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-brain text-success" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Modelado</h6>
+                            <p class="text-muted small">
+                                Evaluación de múltiples algoritmos, optimización de hiperparámetros 
+                                y validación cruzada estratificada.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-chart-bar text-danger" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Evaluación</h6>
+                            <p class="text-muted small">
+                                Análisis de métricas de rendimiento, matrices de confusión 
+                                y validación en datos independientes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-rocket" style="font-size: 2.5rem; color: #9b59b6;"></i>
+                            </div>
+                            <h6 class="fw-semibold">Despliegue</h6>
+                            <p class="text-muted small">
+                                Implementación de modelos en aplicación web con interfaz 
+                                intuitiva y documentación completa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back Button -->
+    <section class="section text-center">
+        <a href="/" class="btn btn-primary btn-lg">
+            <i class="fas fa-arrow-left"></i>
+            Volver al Inicio
+        </a>
+    </section>
+</div>
+{% endblock %}

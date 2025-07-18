@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Error - CS:GO ML Predictor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="text-center">
+            <i class="fas fa-exclamation-triangle fa-5x text-warning mb-4"></i>
+            <h1 class="display-4">Oops!</h1>
+            <p class="lead">{{ error }}</p>
+            <hr class="my-4">
+            <p>
+                Ha ocurrido un error inesperado. Por favor, intenta nuevamente o regresa al inicio.
+            </p>
+            <a class="btn btn-primary btn-lg" href="/" role="button">
+                <i class="fas fa-home"></i> Volver al Inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

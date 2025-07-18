@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}CS:GO ML Predictor - Inicio{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-bullseye"></i> CS:GO ML Predictor
+            </h1>
+            <p class="lead">
+                Sistema de predicción avanzado para análisis de rendimiento en Counter-Strike: Global Offensive
+            </p>
+            <hr class="my-4">
+            <p>
+                Utiliza modelos de Machine Learning entrenados con datos de más de 79,000 rondas para predecir 
+                efectividad de jugadores y resultados de partidas.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-pie"></i> Predicción de Efectividad
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Predice el nivel de efectividad de un jugador (Bajo, Medio, Alto) basado en:
+                </p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Headshots por ronda</li>
+                    <li><i class="fas fa-check text-success"></i> Efectividad con granadas</li>
+                </ul>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <strong>Modelo:</strong> Clasificación multiclase<br>
+                        <strong>Accuracy:</strong> ~82%<br>
+                        <strong>Algoritmo:</strong> Gradient Boosting
+                    </small>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="/classification" class="btn btn-primary w-100">
+                    <i class="fas fa-chart-pie"></i> Probar Clasificación
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-success">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line"></i> Predicción de Kills
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Predice el número de kills esperados en una partida basado en:
+                </p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Kills por ronda</li>
+                    <li><i class="fas fa-check text-success"></i> Headshots en la partida</li>
+                    <li><i class="fas fa-check text-success"></i> Valor del equipamiento del equipo</li>
+                    <li><i class="fas fa-check text-success"></i> Asistencias en la partida</li>
+                </ul>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <strong>Modelo:</strong> Regresión<br>
+                        <strong>R² Score:</strong> ~75%<br>
+                        <strong>Algoritmo:</strong> Gradient Boosting
+                    </small>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="/regression" class="btn btn-success w-100">
+                    <i class="fas fa-chart-line"></i> Probar Regresión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-info">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle"></i> Información del Dataset
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <h3 class="text-primary">79,154</h3>
+                        <p class="text-muted">Rondas analizadas</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h3 class="text-success">32</h3>
+                        <p class="text-muted">Variables incluidas</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h3 class="text-warning">5</h3>
+                        <p class="text-muted">Mapas diferentes</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h3 class="text-danger">2</h3>
+                        <p class="text-muted">Equipos por partida</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-map"></i> Mapas incluidos:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• de_inferno</li>
+                            <li>• de_dust2</li>
+                            <li>• de_mirage</li>
+                            <li>• de_nuke</li>
+                            <li>• Otros mapas competitivos</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-cogs"></i> Variables principales:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Kills, assists, headshots</li>
+                            <li>• Uso de granadas</li>
+                            <li>• Equipamiento y economía</li>
+                            <li>• Supervivencia y tiempo</li>
+                            <li>• Contexto de mapa y equipo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-warning" role="alert">
+            <h6><i class="fas fa-exclamation-triangle"></i> Nota Importante</h6>
+            <p class="mb-0">
+                Los modelos están entrenados con datos históricos de CS:GO y proporcionan estimaciones basadas en 
+                patrones estadísticos. Los resultados deben interpretarse como indicadores de rendimiento probable 
+                y no como predicciones exactas.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

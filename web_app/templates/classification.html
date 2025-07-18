@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}Predicción de Efectividad - CS:GO ML{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Inicio</a></li>
+            <li class="breadcrumb-item active text-primary">Clasificación de Efectividad</li>
+        </ol>
+    </nav>
+
+    <!-- Main Prediction Card -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i> Predicción de Efectividad del Jugador
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        Ingresa las métricas de rendimiento del jugador para obtener una predicción del nivel de efectividad en la ronda actual.
+                    </p>
+
+                    <form id="classificationForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="roundHeadshots" class="form-label">
+                                        <i class="fas fa-crosshairs text-danger"></i> Headshots en la Ronda
+                                    </label>
+                                    <input type="number" class="form-control" id="roundHeadshots" 
+                                           min="0" max="5" step="1" value="1" required>
+                                    <div class="input-range">
+                                        Rango típico: 0-3 headshots por ronda
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="grenadeEffectiveness" class="form-label">
+                                        <i class="fas fa-bomb text-warning"></i> Efectividad con Granadas
+                                    </label>
+                                    <input type="number" class="form-control" id="grenadeEffectiveness" 
+                                           min="0" max="10" step="0.5" value="2.0" required>
+                                    <div class="input-range">
+                                        Rango típico: 0-6 puntos de efectividad
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="model-card mb-4">
+                            <h6 class="fw-semibold text-primary mb-3">
+                                <i class="fas fa-info-circle"></i> Guía de Valores Recomendados
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="fw-medium text-secondary mb-2">Headshots por Ronda:</div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <span class="status-low">0-1</span>
+                                            <span class="text-muted small">Rendimiento básico</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <span class="status-medium">2</span>
+                                            <span class="text-muted small">Rendimiento competente</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-high">3+</span>
+                                            <span class="text-muted small">Rendimiento excelente</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="fw-medium text-secondary mb-2">Efectividad con Granadas:</div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <span class="status-low">0-1.5</span>
+                                            <span class="text-muted small">Uso básico</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <span class="status-medium">2-4</span>
+                                            <span class="text-muted small">Uso táctico efectivo</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-high">4.5+</span>
+                                            <span class="text-muted small">Uso muy estratégico</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-brain"></i> Analizar Efectividad
+                            </button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Results Section -->
+    <div class="row mt-5" id="resultsSection" style="display: none;">
+        <div class="col-lg-8 mx-auto">
+            <div class="card scale-in">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Resultados de la Predicción
+                </div>
+                <div class="card-body">
+                    <div id="predictionResult">
+                        <!-- Los resultados se llenarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Section -->
+    <div class="row mt-5" id="loadingSection" style="display: none;">
+        <div class="col-12 text-center">
+            <div class="loading-spinner mb-3"></div>
+            <div class="loading-text">Analizando datos con el modelo de Machine Learning...</div>
+        </div>
+    </div>
+
+    <!-- Error Section -->
+    <div class="row mt-5" id="errorSection" style="display: none;">
+        <div class="col-lg-8 mx-auto">
+            <div class="alert alert-danger scale-in">
+                <div class="d-flex align-items-start gap-3">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; margin-top: 0.25rem;"></i>
+                    <div>
+                        <h6 class="fw-semibold mb-2">Error en la Predicción</h6>
+                        <p id="errorMessage" class="mb-0"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('classificationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Obtener valores del formulario
+    const roundHeadshots = parseFloat(document.getElementById('roundHeadshots').value);
+    const grenadeEffectiveness = parseFloat(document.getElementById('grenadeEffectiveness').value);
+    
+    // Validar inputs
+    if (roundHeadshots < 0 || grenadeEffectiveness < 0) {
+        showError('Los valores deben ser positivos');
+        return;
+    }
+    
+    // Mostrar loading
+    showLoading();
+    
+    try {
+        const response = await fetch('/api/predict/effectiveness', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                round_headshots: roundHeadshots,
+                grenade_effectiveness: grenadeEffectiveness
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showResults(data.result, data.model_info);
+        } else {
+            showError(data.error || 'Error desconocido');
+        }
+    } catch (error) {
+        showError('Error de conexión: ' + error.message);
+    }
+});
+
+function showLoading() {
+    document.getElementById('loadingSection').style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorSection').style.display = 'none';
+}
+
+function showResults(result, modelInfo) {
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('errorSection').style.display = 'none';
+    
+    const prediction = result.prediction;
+    const probabilities = result.probabilities;
+    const confidence = result.confidence;
+    
+    // Determinar color y icono según la predicción
+    let badgeClass, icon;
+    switch(prediction) {
+        case 'Alto':
+            badgeClass = 'bg-success';
+            icon = 'fas fa-trophy';
+            break;
+        case 'Medio':
+            badgeClass = 'bg-warning';
+            icon = 'fas fa-medal';
+            break;
+        default:
+            badgeClass = 'bg-secondary';
+            icon = 'fas fa-user';
+    }
+    
+    const resultHTML = `
+        <div class="prediction-result fade-in">
+            <div class="text-center mb-4">
+                <i class="${icon}" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h4 class="fw-bold text-primary mb-2">Nivel de Efectividad</h4>
+                <div class="prediction-value">${prediction}</div>
+                <div class="prediction-confidence">
+                    Confianza del modelo: ${(confidence * 100).toFixed(1)}%
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="model-card">
+                    <h6 class="fw-semibold text-primary mb-3">Distribución de Probabilidades</h6>
+                    ${Object.entries(probabilities).map(([clase, prob]) => `
+                        <div class="metric-item">
+                            <span class="metric-label">${clase}</span>
+                            <span class="metric-value">${(prob * 100).toFixed(1)}%</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" style="width: ${prob * 100}%"></div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="model-card">
+                    <h6 class="fw-semibold text-primary mb-3">Información del Modelo</h6>
+                    <div class="metric-item">
+                        <span class="metric-label">Algoritmo</span>
+                        <span class="metric-value">${modelInfo.model_name}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Precisión</span>
+                        <span class="metric-value">${(modelInfo.accuracy * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Tipo</span>
+                        <span class="metric-value">Clasificación</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="alert alert-info mt-4">
+            <div class="d-flex align-items-start gap-3">
+                <i class="fas fa-lightbulb text-accent" style="font-size: 1.5rem; margin-top: 0.25rem;"></i>
+                <div>
+                    <h6 class="fw-semibold mb-2">Interpretación del Resultado</h6>
+                    <div class="text-muted">${getInterpretation(prediction, confidence)}</div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('predictionResult').innerHTML = resultHTML;
+    document.getElementById('resultsSection').style.display = 'block';
+}
+
+function showError(message) {
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorSection').style.display = 'block';
+}
+
+function getInterpretation(prediction, confidence) {
+    let interpretation = '';
+    
+    switch(prediction) {
+        case 'Alto':
+            interpretation = 'El jugador muestra un rendimiento <strong>excelente</strong> en esta ronda. ' +
+                           'Los altos valores de headshots y efectividad con granadas indican un dominio técnico superior.';
+            break;
+        case 'Medio':
+            interpretation = 'El jugador tiene un rendimiento <strong>competente</strong> en esta ronda. ' +
+                           'Hay espacio para mejorar tanto en precisión como en uso táctico de granadas.';
+            break;
+        default:
+            interpretation = 'El jugador muestra un rendimiento <strong>básico</strong> en esta ronda. ' +
+                           'Se recomienda practicar la precisión de tiro y el uso estratégico de granadas.';
+    }
+    
+    if (confidence < 0.6) {
+        interpretation += '<br><br><em>Nota: La confianza del modelo es relativamente baja, ' +
+                         'lo que sugiere que los valores ingresados están en una zona límite entre categorías.</em>';
+    }
+    
+    return interpretation;
+}
+</script>
+{% endblock %}
