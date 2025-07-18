@@ -1,29 +1,28 @@
 {
-  "model_name": "K-Nearest Neighbors",
-  "model_type": "classification",
-  "target": "EffectivenessLevel",
+  "model_name": "K-Nearest Neighbors Mejorado",
   "features": [
     "RoundHeadshots",
     "GrenadeEffectiveness"
   ],
   "use_scaler": true,
-  "best_params": {
-    "n_neighbors": 7,
-    "weights": "distance"
-  },
-  "performance_metrics": {
-    "test_accuracy": 0.813,
-    "test_f1": 0.807,
-    "test_auc": 0.884,
-    "cv_accuracy": 0.81
+  "performance": {
+    "test_accuracy": 0.9805445012949277,
+    "test_f1": 0.9805482081394269,
+    "test_auc": 0.994220638109573
   },
   "class_mapping": {
     "0": "Bajo",
     "1": "Medio",
     "2": "Alto"
   },
-  "feature_requirements": {
-    "RoundHeadshots": "int64",
-    "GrenadeEffectiveness": "float64"
+  "feature_ranges": {
+    "RoundHeadshots": [
+      0,
+      8
+    ],
+    "GrenadeEffectiveness": [
+      0,
+      15
+    ]
   }
 }

@@ -150,6 +150,47 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                 </div>
+
+                <!-- Phase 5: ROC Curve -->
+                <div class="row mb-5">
+                    <div class="col col-6">
+                        <img src="/static/images/classification_roc_curve.png" 
+                             alt="Curvas ROC del modelo de clasificación" 
+                             class="w-100 rounded shadow-sm">
+                    </div>
+                    <div class="col col-6">
+                        <h5 class="fw-semibold text-primary mb-3">5. Curvas ROC - Evaluación Detallada</h5>
+                        <p class="text-muted">
+                            Las curvas ROC (Receiver Operating Characteristic) evalúan la capacidad del modelo K-Nearest Neighbors 
+                            para distinguir entre las diferentes clases de efectividad. Cada curva representa la discriminación 
+                            One-vs-Rest para cada nivel de efectividad.
+                        </p>
+                        <div class="model-card">
+                            <div class="metric-item">
+                                <span class="metric-label">AUC Nivel Alto</span>
+                                <span class="metric-value">0.99+</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">AUC Nivel Medio</span>
+                                <span class="metric-value">0.99+</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">AUC Nivel Bajo</span>
+                                <span class="metric-value">0.99+</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">AUC Promedio</span>
+                                <span class="metric-value">0.994</span>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-3">
+                            <small>
+                                <i class="fas fa-info-circle"></i> 
+                                Valores de AUC cercanos a 1.0 indican rendimiento excelente en la clasificación.
+                            </small>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

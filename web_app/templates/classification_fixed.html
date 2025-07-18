@@ -45,8 +45,8 @@
                                     <i class="fas fa-crosshairs text-danger"></i> Headshots en la Ronda
                                 </label>
                                 <input type="number" class="form-control" id="roundHeadshots" 
-                                       min="0" max="5" step="1" value="1" required>
-                                <small class="text-muted">Rango típico: 0-3 headshots por ronda</small>
+                                       min="0" max="8" step="1" value="1" required>
+                                <small class="text-muted">Rango típico: 0-8 headshots por ronda</small>
                             </div>
 
                             <div class="mb-3">
@@ -54,8 +54,8 @@
                                     <i class="fas fa-bomb text-warning"></i> Efectividad con Granadas
                                 </label>
                                 <input type="number" class="form-control" id="grenadeEffectiveness" 
-                                       min="0" max="10" step="0.5" value="2.0" required>
-                                <small class="text-muted">Rango típico: 0-6 puntos de efectividad</small>
+                                       min="0" max="15" step="0.5" value="2.0" required>
+                                <small class="text-muted">Rango típico: 0-15 puntos de efectividad</small>
                             </div>
 
                             <div class="text-center">
@@ -97,6 +97,30 @@
                 <div class="alert alert-danger">
                     <h6><i class="fas fa-exclamation-triangle"></i> Error en la Predicción</h6>
                     <p id="errorMessage" class="mb-0"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROC Curve Section -->
+        <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-area"></i> Rendimiento del Modelo - Curva ROC</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="text-muted">La curva ROC muestra la capacidad del modelo K-Nearest Neighbors para distinguir entre los diferentes niveles de efectividad.</p>
+                        <img src="{{ url_for('static', filename='images/classification_roc_web.png') }}" 
+                             class="img-fluid rounded shadow-sm" 
+                             alt="Curva ROC del Modelo de Clasificación"
+                             style="max-width: 100%; height: auto;">
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                Un área bajo la curva (AUC) cercana a 1.0 indica excelente rendimiento del modelo.
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
