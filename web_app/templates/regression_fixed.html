@@ -296,20 +296,26 @@
                     </div>
                     <div class="card-body">
                         <div class="progress" style="height: 25px;">
-                            <div class="progress-bar bg-danger" style="width: 20%">
-                                <small>Bajo</small>
+                            <div class="progress-bar bg-danger" style="width: 33.33%">
+                                <small>Bajo (0-5 kills)</small>
                             </div>
-                            <div class="progress-bar bg-warning" style="width: 30%">
-                                <small>Promedio</small>
+                            <div class="progress-bar bg-warning" style="width: 33.33%">
+                                <small>Promedio (5-15 kills)</small>
                             </div>
-                            <div class="progress-bar bg-success" style="width: 50%">
-                                <small>Alto</small>
+                            <div class="progress-bar bg-success" style="width: 33.34%">
+                                <small>Alto (15-41 kills)</small>
                             </div>
                         </div>
                         <div class="position-relative mt-1">
                             <div style="position: absolute; left: ${Math.min(95, Math.max(5, percentile))}%; transform: translateX(-50%);">
                                 <i class="fas fa-caret-up text-primary" style="font-size: 1.5rem;"></i>
                             </div>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <small class="text-muted">
+                                Tu predicción: <strong>${prediction.toFixed(1)} kills</strong> | 
+                                Percentil: <strong>${percentile.toFixed(1)}%</strong>
+                            </small>
                         </div>
                     </div>
                 </div>

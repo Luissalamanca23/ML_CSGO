@@ -6,14 +6,14 @@
 <div class="container">
     <!-- Hero Section -->
     <section class="hero-section fade-in">
-        <div class="hero-content text-center">
-            <h1 class="hero-title">
+        <div class="hero-content text-center text-white">
+            <h1 class="hero-title text-white">
                 <i class="fas fa-brain"></i> Proceso de Entrenamiento
             </h1>
-            <p class="hero-subtitle">
+            <p class="hero-subtitle text-white">
                 Metodología CRISP-DM aplicada al desarrollo de modelos predictivos
             </p>
-            <p class="hero-description">
+            <p class="hero-description text-white">
                 Descubre cómo fueron desarrollados y optimizados nuestros modelos de Machine Learning para CS:GO
             </p>
         </div>
@@ -39,7 +39,7 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">1. Análisis de la Variable Objetivo</h5>
+                        <h5 class="fw-semibold text-accent mb-3">1. Análisis de la Variable Objetivo</h5>
                         <p class="text-muted">
                             Se analizó la distribución de los niveles de efectividad en el dataset. Se observa una 
                             distribución relativamente balanceada entre las tres categorías, con una ligera predominancia 
@@ -65,7 +65,7 @@
                 <!-- Phase 2: Feature Analysis -->
                 <div class="row mb-5">
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">2. Análisis de Características</h5>
+                        <h5 class="fw-semibold text-accent mb-3">2. Análisis de Características</h5>
                         <p class="text-muted">
                             Se evaluó la relación entre las variables predictoras (RoundHeadshots y GrenadeEffectiveness) 
                             y la variable objetivo. Los boxplots muestran clara separación entre niveles, confirmando 
@@ -97,7 +97,7 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">3. Comparación de Modelos</h5>
+                        <h5 class="fw-semibold text-accent mb-3">3. Comparación de Modelos</h5>
                         <p class="text-muted">
                             Se evaluaron múltiples algoritmos de clasificación utilizando validación cruzada. 
                             Gradient Boosting demostró el mejor rendimiento con una precisión del 82.4%, 
@@ -123,7 +123,7 @@
                 <!-- Phase 4: Confusion Matrix -->
                 <div class="row mb-5">
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">4. Matriz de Confusión</h5>
+                        <h5 class="fw-semibold text-accent mb-3">4. Matriz de Confusión</h5>
                         <p class="text-muted">
                             La matriz de confusión del mejor modelo muestra un excelente rendimiento en la clasificación 
                             de los tres niveles de efectividad. La diagonal principal indica alta precisión en las 
@@ -159,7 +159,7 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">5. Curvas ROC - Evaluación Detallada</h5>
+                        <h5 class="fw-semibold text-accent mb-3">5. Curvas ROC - Evaluación Detallada</h5>
                         <p class="text-muted">
                             Las curvas ROC (Receiver Operating Characteristic) evalúan la capacidad del modelo K-Nearest Neighbors 
                             para distinguir entre las diferentes clases de efectividad. Cada curva representa la discriminación 
@@ -215,7 +215,7 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">1. Análisis de Correlaciones</h5>
+                        <h5 class="fw-semibold text-accent mb-3">1. Análisis de Correlaciones</h5>
                         <p class="text-muted">
                             Se analizaron las correlaciones entre las variables predictoras y la variable objetivo (MatchKills). 
                             Las correlaciones altas (>0.7) con RoundKills y MatchHeadshots confirman su relevancia 
@@ -241,7 +241,7 @@
                 <!-- Phase 2: Model Performance -->
                 <div class="row mb-5">
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">2. Comparación de Rendimiento</h5>
+                        <h5 class="fw-semibold text-accent mb-3">2. Comparación de Rendimiento</h5>
                         <p class="text-muted">
                             Se evaluaron diferentes algoritmos de regresión. Gradient Boosting Regressor alcanzó 
                             el mejor R² score de 75.3%, demostrando una capacidad superior para capturar patrones 
@@ -277,7 +277,7 @@
                              class="w-100 rounded shadow-sm">
                     </div>
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">3. Importancia de Variables</h5>
+                        <h5 class="fw-semibold text-accent mb-3">3. Importancia de Variables</h5>
                         <p class="text-muted">
                             El análisis de importancia revela que RoundKills es la variable más predictiva, 
                             seguida por MatchHeadshots. Esto confirma la intuición de que el rendimiento por ronda 
@@ -303,7 +303,7 @@
                 <!-- Phase 4: Residual Analysis -->
                 <div class="row mb-5">
                     <div class="col col-6">
-                        <h5 class="fw-semibold text-primary mb-3">4. Análisis de Residuos</h5>
+                        <h5 class="fw-semibold text-accent mb-3">4. Análisis de Residuos</h5>
                         <p class="text-muted">
                             El análisis de residuos confirma la calidad del modelo. La distribución normal de los 
                             residuos y la ausencia de patrones sistemáticos indican que el modelo captura 
@@ -345,7 +345,7 @@
                     <div class="col col-4">
                         <div class="text-center mb-4">
                             <div class="mb-3">
-                                <i class="fas fa-search text-primary" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-search text-accent" style="font-size: 2.5rem;"></i>
                             </div>
                             <h6 class="fw-semibold">Comprensión del Negocio</h6>
                             <p class="text-muted small">
@@ -369,7 +369,7 @@
                     <div class="col col-4">
                         <div class="text-center mb-4">
                             <div class="mb-3">
-                                <i class="fas fa-tools text-warning" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-tools text-accent" style="font-size: 2.5rem;"></i>
                             </div>
                             <h6 class="fw-semibold">Preparación de Datos</h6>
                             <p class="text-muted small">
@@ -384,7 +384,7 @@
                     <div class="col col-4">
                         <div class="text-center mb-4">
                             <div class="mb-3">
-                                <i class="fas fa-brain text-success" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-brain text-accent" style="font-size: 2.5rem;"></i>
                             </div>
                             <h6 class="fw-semibold">Modelado</h6>
                             <p class="text-muted small">
@@ -396,7 +396,7 @@
                     <div class="col col-4">
                         <div class="text-center mb-4">
                             <div class="mb-3">
-                                <i class="fas fa-chart-bar text-danger" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-chart-bar text-accent" style="font-size: 2.5rem;"></i>
                             </div>
                             <h6 class="fw-semibold">Evaluación</h6>
                             <p class="text-muted small">
@@ -408,7 +408,7 @@
                     <div class="col col-4">
                         <div class="text-center mb-4">
                             <div class="mb-3">
-                                <i class="fas fa-rocket" style="font-size: 2.5rem; color: #9b59b6;"></i>
+                                <i class="fas fa-rocket text-accent" style="font-size: 2.5rem;"></i>
                             </div>
                             <h6 class="fw-semibold">Despliegue</h6>
                             <p class="text-muted small">
@@ -424,7 +424,7 @@
 
     <!-- Back Button -->
     <section class="section text-center">
-        <a href="/" class="btn btn-primary btn-lg">
+        <a href="/" class="btn btn-outline btn-lg">
             <i class="fas fa-arrow-left"></i>
             Volver al Inicio
         </a>

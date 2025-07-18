@@ -5,26 +5,28 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
-            <h1 class="display-4">
-                <i class="fas fa-bullseye"></i> CS:GO ML Predictor
-            </h1>
-            <p class="lead">
-                Sistema de predicción avanzado para análisis de rendimiento en Counter-Strike: Global Offensive
-            </p>
-            <hr class="my-4">
-            <p>
-                Utiliza modelos de Machine Learning entrenados con datos de más de 79,000 rondas para predecir 
-                efectividad de jugadores y resultados de partidas.
-            </p>
+        <div class="hero-section text-white p-5 rounded mb-4">
+            <div class="hero-content text-center">
+                <h1 class="hero-title text-white">
+                    <i class="fas fa-bullseye"></i> CS:GO ML Predictor
+                </h1>
+                <p class="hero-subtitle text-white">
+                    Sistema de predicción avanzado para análisis de rendimiento en Counter-Strike: Global Offensive
+                </p>
+                <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
+                <p class="hero-description text-white">
+                    Utiliza modelos de Machine Learning entrenados con datos de más de 79,000 rondas para predecir 
+                    efectividad de jugadores y resultados de partidas.
+                </p>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6 mb-4">
-        <div class="card h-100 border-primary">
-            <div class="card-header bg-primary text-white">
+        <div class="card h-100">
+            <div class="card-header">
                 <h5 class="card-title mb-0">
                     <i class="fas fa-chart-pie"></i> Predicción de Efectividad
                 </h5>
@@ -46,7 +48,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="/classification" class="btn btn-primary w-100">
+                <a href="/classification" class="btn btn-outline w-100">
                     <i class="fas fa-chart-pie"></i> Probar Clasificación
                 </a>
             </div>
@@ -54,8 +56,8 @@
     </div>
 
     <div class="col-md-6 mb-4">
-        <div class="card h-100 border-success">
-            <div class="card-header bg-success text-white">
+        <div class="card h-100">
+            <div class="card-header">
                 <h5 class="card-title mb-0">
                     <i class="fas fa-chart-line"></i> Predicción de Kills
                 </h5>
@@ -79,7 +81,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="/regression" class="btn btn-success w-100">
+                <a href="/regression" class="btn btn-outline w-100">
                     <i class="fas fa-chart-line"></i> Probar Regresión
                 </a>
             </div>
@@ -89,8 +91,8 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <div class="card border-info">
-            <div class="card-header bg-info text-white">
+        <div class="card">
+            <div class="card-header">
                 <h5 class="card-title mb-0">
                     <i class="fas fa-info-circle"></i> Información del Dataset
                 </h5>
@@ -98,19 +100,19 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 text-center">
-                        <h3 class="text-primary">79,154</h3>
+                        <h3 class="text-accent">79,154</h3>
                         <p class="text-muted">Rondas analizadas</p>
                     </div>
                     <div class="col-md-3 text-center">
-                        <h3 class="text-success">32</h3>
+                        <h3 class="text-accent">32</h3>
                         <p class="text-muted">Variables incluidas</p>
                     </div>
                     <div class="col-md-3 text-center">
-                        <h3 class="text-warning">5</h3>
+                        <h3 class="text-accent">5</h3>
                         <p class="text-muted">Mapas diferentes</p>
                     </div>
                     <div class="col-md-3 text-center">
-                        <h3 class="text-danger">2</h3>
+                        <h3 class="text-accent">2</h3>
                         <p class="text-muted">Equipos por partida</p>
                     </div>
                 </div>
@@ -144,7 +146,7 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <div class="alert alert-warning" role="alert">
+        <div class="alert alert-info" role="alert">
             <h6><i class="fas fa-exclamation-triangle"></i> Nota Importante</h6>
             <p class="mb-0">
                 Los modelos están entrenados con datos históricos de CS:GO y proporcionan estimaciones basadas en 
